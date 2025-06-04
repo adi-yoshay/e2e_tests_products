@@ -1,0 +1,27 @@
+self = <Tests.products.test_products_list.TestProductList object at 0x7fb3ab76ab80>
+
+    def test_cart_flow_all_products(self):
+        """
+        Add all products to cart, verify they appear in cart with 'Remove' button,
+        then remove all products and verify 'Add to cart' is visible again.
+        """
+        self.products_page = ProductsListPage(self.page)
+    
+        # Step 1: Add all products
+        for product in self.products:
+            self.products_page.add_product_to_cart(product)
+            remove_btn = self.products_page.get_remove_button_locator(product)
+            expect(remove_btn).to_be_visible()
+    
+        # Step 3: Go to cart and verify all products appear there
+        self.products_page.get_cart_icon_locator().click()
+        for product in self.products:
+            cart_item = self.page.locator(".cart_item").locator(".inventory_item_name", has_text=product)
+>           expect(cart_item).to_be_visible()
+E           AssertionError: Locator expected to be visible
+E           Actual value: None 
+E           Call log:
+E           LocatorAssertions.to_be_visible with timeout 5000ms
+E             - waiting for locator(".cart_item").locator(".inventory_item_name").filter(has_text="Sauce Labs Backpack")
+
+test_products_list.py:30: AssertionError
